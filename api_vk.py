@@ -1,5 +1,6 @@
 # import os
 import requests
+import datetime
 import json
 from pprint import pprint
 from vktoken import vktoken
@@ -15,37 +16,50 @@ class VkLoading():
     def user_info(self):
         url = 'https://api.vk.com/method/users.get'
         params = {'user_ids': self.user_id,
-                  'fields': 'city, sex, bdate',
+                  'fields': 'first_name, last_name, deactivated, is_closed, city, sex, bdate',
                   'access_token': self.token,
                   'v': '5.1948'}
         res = requests.get(url, params=params)
         info_ = res.json()
-        bdate = ['response']['bdate']
-        # bdate = (((info_.get('response'))[0]).get('bdate'))
-        city_id = (((info_.get('response'))[0]).get('city')).get('id')
-        sex = ((info_.get('response'))[0]).get('sex')
-        if sex == 2:
-            sex = 1
+        bdate = (((info_.get('response'))[0]).get('bdate'))
+        is_closed = (((info_.get('response'))[0]).get('is_closed'))
+
+        if bdate == None:
+            age = None
+        elif len(bdate) < 8:
+            age = None
         else:
-            sex = 2
+            age = int((str(datetime.datetime.today()))[:4]) - int((bdate)[-4:])
 
-        info_search = [bdate, city_id, sex]
+        city = (((info_.get('response'))[0]).get('city')).get('title')
+        sex = ((info_.get('response'))[0]).get('sex')
+        first_name = (((info_.get('response'))[0]).get('first_name'))
+        last_name = (((info_.get('response'))[0]).get('last_name'))
 
-        return info_search
+        user_info = {'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
+
+        return user_info
 
 
-    def search_users(self):
+    def users_search(self):
         url = 'https://api.vk.com/method/users.search'
         user_info = self.user_info()
-        params = {'count': '1',
-                  'fields': 'bdate, domain, city',
-                  'birth_year': user_info[0],
-                  'sex': user_info[2],
-                  'city': user_info[1],
+        if user_info.get('sex') == 1:
+            sex = 2
+        elif user_info.get('sex') == 2:
+            sex = 1
+        else:
+            print('Укажите пол')
+        params = {'count': '1000',
+                  'fields': 'city',
+                  'age_from': user_info.get('age'),
+                  'age_to': user_info.get('age'),
+                  'sex': sex,
+                  'hometown': user_info.get('city'),
                   'access_token': self.token,
                   'v': '5.1948'}
-        search_ = requests.get(url, params=params)
-        return search_.json()
+        users_search = requests.get(url, params=params)
+        return users_search.json()
 
     def user_photos(self):
         url = 'https://api.vk.com/method/photos.get'
@@ -98,6 +112,10 @@ class VkLoading():
 
 
 
-def search_vk(user_id):
+def user_info(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
-    pprint(vk.tinder())
+    pprint(vk.user_info())
+
+def users_search(user_id):
+    vk = VkLoading(token=vktoken, user_id=user_id)
+    pprint(vk.users_search())
