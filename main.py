@@ -28,22 +28,22 @@ if __name__ == '__main__':
 
             # Добавить данные юзера в БД
             user_info = {
-                'vk_id': 1607,
+                'vk_id': 123,
                 'first_name': 'Ira',
                 'last_name': 'Smirnova',
-                'sex': 'girl',
+                'sex': 2,
                 'age': 20,
                 'city': 'Москва'
             }
             print(table.add_person(user_info))        
 
             # Добавить страницу в список избранных (создать пару)
-            elector_id = 1607
+            elector_id = 123
             favorite_info = {
-                'vk_id': 829,
+                'vk_id': 67890,
                 'first_name': 'Gena',
                 'last_name': 'Smirnoff',
-                'sex': 'men',
+                'sex': 1,
                 'age': 25,
                 'city': 'Tomsk'
                 }
@@ -54,7 +54,7 @@ if __name__ == '__main__':
             print(table.add_favorite(elector_id, favorite_info, photo_list))  
 
             # Вывести список избранных
-            vk_id = 1
+            vk_id = 123
             print(table.outputs_list(vk_id))  
 
     conn.close()

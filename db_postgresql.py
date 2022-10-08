@@ -13,7 +13,7 @@ class DataBase:
                             vk_id       INTEGER      UNIQUE NOT NULL,                
                             first_name  VARCHAR(30)  NOT NULL,   
                             last_name   VARCHAR(30)  NOT NULL,
-                            sex         VARCHAR(8)   NOT NULL,
+                            sex         SMALLINT     NOT NULL,
                             age         SMALLINT,
                             city        VARCHAR(50)
                             );

@@ -45,6 +45,9 @@ photo1 = 'photo-178004949_456239022'
 photo2 = 'photo-216237919_457239022'
 photo3 = 'photo-216237919_457239021'
 
+# Здесь нужно занести в переменную возраст пользователя в age
+
+age = None
 
 def bot_logic():
     for event in longpoll.listen():
@@ -59,9 +62,13 @@ def bot_logic():
 
 
                 elif text == 'start':
-                    keyboard = VkKeyboard(one_time=True)
-                    keyboard.add_button('Найти пару')
-                    write_msg(event.user_id, 'Lets go', keyboard)
+                    if age == None:
+                        write_msg(user_id, f"Укажите дату рождения и попробуйте снова")
+                    else:
+                        keyboard = VkKeyboard(one_time=True)
+                        keyboard.add_button('Найти пару')
+                        write_msg(event.user_id, 'Lets go', keyboard)
+
 
                 elif text == 'найти пару':
                     find_pair(user_id)
@@ -93,3 +100,6 @@ def bot_logic():
 
                 else:
                     write_msg(user_id, "Не поняла вашего ответа...")
+
+
+bot_logic()
