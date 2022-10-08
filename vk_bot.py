@@ -2,6 +2,9 @@ from random import randrange
 import vk_api
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
+from api_vk import user_info
+from api_vk import users_search
+
 
 TOKEN = 'vk1.a.lmZJ4sTwjbf8y5pxNVKN507gwWi7WcO43ju1S-gdsl7UDsEgMi-O8q-lpE0v1eMMJQ4PRaol1u7RDULnUmzWzLFElzJRM07tdU-Xvnzk8PIUm6HaHGp8paqqIYFRp6TSUsrAQ9YAf5uIzDbO1IVTz55-wk1RlCKOk_qvUrBlbMk5nEErI-8ztcQqBvEz1Zi9'
 
@@ -47,23 +50,24 @@ photo3 = 'photo-216237919_457239021'
 
 # Здесь нужно занести в переменную возраст пользователя в age
 
-age = None
-
 def bot_logic():
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW:
             user_id = event.user_id
 
+
             if event.to_me:
                 text = event.text.lower()
-
+                info_user = user_info(user_id)
                 if text == "привет":
                     write_msg(user_id, f"Хай, напиши start, чтобы начать поиск фото")
 
 
                 elif text == 'start':
-                    if age == None:
-                        write_msg(user_id, f"Укажите дату рождения и попробуйте снова")
+                    if (user_info(user_id)).get('is_closed') == True:
+                        write_msg(user_id, f"Откройте доступ к своему профилю и попробуйте снова")
+                    elif (user_info(user_id)).get('age') == None:
+                        write_msg(user_id, f"Установите в настройках профиля \"Показывать дату рождения\" и попробуйте снова")
                     else:
                         keyboard = VkKeyboard(one_time=True)
                         keyboard.add_button('Найти пару')
@@ -103,3 +107,6 @@ def bot_logic():
 
 
 bot_logic()
+
+if __name__ == '__main__':
+    bot_logic()

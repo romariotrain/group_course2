@@ -20,6 +20,7 @@ class VkLoading():
                   'v': '5.1948'}
         res = requests.get(url, params=params)
         info_ = res.json()
+
         bdate = (((info_.get('response'))[0]).get('bdate'))
         is_closed = (((info_.get('response'))[0]).get('is_closed'))
 
@@ -34,10 +35,10 @@ class VkLoading():
         sex = ((info_.get('response'))[0]).get('sex')
         first_name = (((info_.get('response'))[0]).get('first_name'))
         last_name = (((info_.get('response'))[0]).get('last_name'))
+        print(first_name)
+        info_user = {'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
 
-        user_info = {'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
-
-        return user_info
+        return pprint(info_user)
 
 
     def users_search(self):
@@ -113,7 +114,7 @@ class VkLoading():
 
 def user_info(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
-    pprint(vk.user_info())
+    vk.user_info()
 
 def users_search(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
