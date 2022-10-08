@@ -1,0 +1,2 @@
+vktoken = 'vk1.a.HgNOtj_cY-beY9Ecqx8TlSTOh72zHUdKgBNLyoT_1IUkiCPNCL7ienQEz04rpLcrZXZ1aSXBqOyO3ue1OTxZ3Sb1Z9kt1cCezo5BNkOabDZ33LSVoM_jyvaMRjpxZyMd8DGUjlIsZIaVhIuWGGJpHIw5Tf7LDuDnkJyQuoeOJLLhbJht7ZMBn8ihfZO33iBc'
+password_sql = 'sql8114'
