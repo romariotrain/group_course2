@@ -32,7 +32,7 @@ def send_photos(user_id, photo_list, search_id):
 
 
 def find_pair(user_id, user):
-    print(user)
+    info_user = user_info(user)
     photo_list = links_photos(user)
     send_photos(user_id, photo_list, user)
     keyboard = VkKeyboard()
@@ -41,6 +41,8 @@ def find_pair(user_id, user):
     keyboard.add_line()
     keyboard.add_button('Показать список избранных')
     keyboard.add_button('Закончить работу')
+    write_msg(user_id, f"{info_user.get('first_name')} {info_user.get('last_name')},"
+                       f" возраст - {info_user.get('age')},\n https://www.vk.com/id{user}")
     write_msg(user_id, 'Выберите команду', keyboard1=keyboard)
 
 
@@ -48,16 +50,18 @@ def find_pair(user_id, user):
 
 
 
+
 def bot_logic():
+
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW:
             user_id = event.user_id
-
+            info_user = user_info(user_id)
 
 
             if event.to_me:
                 text = event.text.lower()
-                info_user = user_info(user_id)
+
                 if text == "привет":
                     write_msg(user_id, f"Хай, напиши start, чтобы начать поиск фото")
 
@@ -69,6 +73,8 @@ def bot_logic():
                         write_msg(user_id, f"Установите в настройках профиля \"Показывать дату рождения\" и попробуйте снова")
                     elif (user_info(user_id)).get('sex') == 0:
                         write_msg(user_id, f"Установите в настройках профиля \"Пол\" и попробуйте снова")
+                    elif (user_info(user_id)).get('city') == 'Мухосранск':
+                        write_msg(user_id, f"Укажите в настройках профиля город проживания и попробуйте снова")
                     else:
                         keyboard = VkKeyboard(one_time=True)
                         keyboard.add_button('Найти пару')
@@ -77,7 +83,7 @@ def bot_logic():
 
 
                 elif text == 'найти пару':
-                    user = users_search(user_id)
+                    user = users_search(user_id, (info_user.get('city')))
                     find_pair(user_id, user)
 
                 elif text == 'продолжить поиск':
@@ -87,7 +93,7 @@ def bot_logic():
 
                 elif text == 'добавить в избранное':
                     keyboard = VkKeyboard()
-                    keyboard.add_button('найти пару')
+                    keyboard.add_button('продолжить поиск')
                     keyboard.add_line()
                     keyboard.add_button('Показать список избранных')
                     keyboard.add_button('Закончить работу')

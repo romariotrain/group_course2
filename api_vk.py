@@ -33,7 +33,7 @@ class VkLoading():
         else:
             age = int((str(datetime.datetime.today()))[:4]) - int((bdate)[-4:])
 
-        city = (((info_.get('response'))[0]).get('city')).get('title')
+        city = (((info_.get('response'))[0]).get('city', {'title': 'Мухосранск'})).get('title')
         sex = ((info_.get('response'))[0]).get('sex')
         first_name = (((info_.get('response'))[0]).get('first_name'))
         last_name = (((info_.get('response'))[0]).get('last_name'))
@@ -46,7 +46,7 @@ class VkLoading():
    # Поск людей по необходимым параметрам,
    #  если ищет женщина, то подбираются мущины ровесники и старше до 5 лет
    #  если ищет мужчина, то подбираются женщины ровесники и младше до 5 лет
-    def users_search(self):
+    def users_search(self, city):
         url = 'https://api.vk.com/method/users.search'
         user_info = self.user_info()
         sex = None
@@ -77,7 +77,7 @@ class VkLoading():
         user_list = []
         for user in search_users['response']['items']:
             if user.get('is_closed') == False and \
-                    (user.get('city', {'title': 'Мухосранск'})).get('title') == 'Киров':
+                    (user.get('city', {'title': 'Мухосранск'})).get('title') == city:
                 user_list.append(str(user.get('id')))
         user = user_list.pop()
 
@@ -158,9 +158,9 @@ def user_info(user_id):
     return vk.user_info()
 
 
-def users_search(user_id):
+def users_search(user_id, city):
     vk = VkLoading(token=vktoken, user_id=user_id)
-    return vk.users_search()
+    return vk.users_search(city)
 
 def users_search_next(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
