@@ -37,7 +37,7 @@ class VkLoading():
         sex = ((info_.get('response'))[0]).get('sex')
         first_name = (((info_.get('response'))[0]).get('first_name'))
         last_name = (((info_.get('response'))[0]).get('last_name'))
-        info_user = {'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
+        info_user = {'vk_id': self.user_id, 'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
 
         return info_user
 

@@ -6,7 +6,9 @@ from api_vk import user_info
 from api_vk import users_search
 from api_vk import users_search_next
 from api_vk import links_photos
-
+import db_postgresql
+import config
+import psycopg2
 
 
 TOKEN = 'vk1.a.lmZJ4sTwjbf8y5pxNVKN507gwWi7WcO43ju1S-gdsl7UDsEgMi-O8q-lpE0v1eMMJQ4PRaol1u7RDULnUmzWzLFElzJRM07tdU-Xvnzk8PIUm6HaHGp8paqqIYFRp6TSUsrAQ9YAf5uIzDbO1IVTz55-wk1RlCKOk_qvUrBlbMk5nEErI-8ztcQqBvEz1Zi9'
@@ -52,7 +54,7 @@ def find_pair(user_id, user):
 
 
 def bot_logic():
-
+    user = None
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW:
             user_id = event.user_id
@@ -76,6 +78,8 @@ def bot_logic():
                     elif (user_info(user_id)).get('city') == 'Мухосранск':
                         write_msg(user_id, f"Укажите в настройках профиля город проживания и попробуйте снова")
                     else:
+                        print(info_user)
+                        # print(table.add_person(info_user))
                         keyboard = VkKeyboard(one_time=True)
                         keyboard.add_button('Найти пару')
                         write_msg(event.user_id, 'Lets go', keyboard)
@@ -98,8 +102,11 @@ def bot_logic():
                     keyboard.add_button('Показать список избранных')
                     keyboard.add_button('Закончить работу')
 
-                    # Здесь надо добавлять id человека, фото которого показываем, в базу
-
+                    # Производим запись избранного в базу
+                    info_user = user_info(user)
+                    photo_list = links_photos(user)
+                    print(info_user)
+                    print(table.add_favorite(user_id, info_user, photo_list))
                     write_msg(user_id, 'Выберите команду', keyboard1=keyboard)
 
 
@@ -110,9 +117,13 @@ def bot_logic():
 
                 elif text == 'показать список избранных':
                     # Здесь выводим список избранных в определенном формате
+                    favorits = (table.outputs_list(int(user_id)))
+                    for favorit in favorits:
+                        #Здесь в f строке нужно сделать вывод favorit
+                        write_msg(user_id, f"{favorit}")
 
                     keyboard = VkKeyboard()
-                    keyboard.add_button('найти пару')
+                    keyboard.add_button('Продолжить поиск')
                     keyboard.add_button('Закончить работу')
                     write_msg(user_id, 'Выберите команду', keyboard1=keyboard)
 
@@ -120,7 +131,5 @@ def bot_logic():
                     write_msg(user_id, "Не поняла вашего ответа...")
 
 
-bot_logic()
 
-if __name__ == '__main__':
-    bot_logic()
+
