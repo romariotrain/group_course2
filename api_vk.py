@@ -37,7 +37,6 @@ class VkLoading():
         info_user = {'vk_id': self.user_id, 'first_name': first_name, 'last_name': last_name, 'age': age, 'city': city, 'sex': sex, 'is_closed': is_closed}
         return info_user
 
-
     # Поск людей по необходимым параметрам,
     #  если ищет женщина, то подбираются мущины ровесники и старше до 5 лет
     #  если ищет мужчина, то подбираются женщины ровесники и младше до 5 лет
@@ -71,7 +70,6 @@ class VkLoading():
         # и тех, кто на данный момент не проживает в городе пользователя
         # Вносим id людей в список
         user_list = []
-
         for user in search_users['response']['items']:
             if user.get('is_closed') == False and \
                     (user.get('city', {'title': 'Мухосранск'})).get('title') == city:
@@ -81,6 +79,8 @@ class VkLoading():
         with open('user_list.txt', "w") as file:
             file.write(','.join(user_list))
         return user
+
+
 
 
     def users_search_next(self):
@@ -125,20 +125,6 @@ class VkLoading():
         return best_photos
 
 
-    def tinder(self):
-        search_users = self.search_users()
-        output_list = []
-        for select_users in search_users['response']['items']:
-            out_list = []
-            self.user_id = select_users['id']
-            out_list.append(select_users['first_name'])
-            out_list.append(select_users['last_name'])
-            out_list.append(f'https://www.vk.com/{select_users["domain"]}')
-            out_list.append(self.links_photos())
-            output_list.append(out_list)
-        return output_list
-
-
 def user_info(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
     return vk.user_info()
@@ -158,11 +144,3 @@ def links_photos(user_id):
     vk = VkLoading(token=vktoken, user_id=user_id)
     return vk.links_photos()
 
-
-def user_photos(user_id):
-    vk = VkLoading(token=vktoken, user_id=user_id)
-    return vk.user_photos()
-
-
-if __name__ == '__main__':
-    pprint(links_photos('41749209'))
