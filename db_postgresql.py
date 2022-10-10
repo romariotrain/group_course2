@@ -36,7 +36,7 @@ class DataBase:
             self.cur.execute("""
                             CREATE TABLE IF NOT EXISTS selected(
                             selected_id  SERIAL   PRIMARY KEY,
-                            elector_id   INTEGER  NOT NULL     REFERENCES person(vk_id),
+                            elector_id   INTEGER  NOT NULL,
                             favorite_id  INTEGER  NOT NULL     REFERENCES person(vk_id)       
                             );                 
                             """)

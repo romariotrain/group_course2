@@ -3,8 +3,8 @@ import db_postgresql
 import config
 import psycopg2
 
-PASSWORD_SQL = config.password_sql
 
+PASSWORD_SQL = config.password_sql
 
 if __name__ == '__main__':
     # Создается подключение к БД через обьект conn.
@@ -22,5 +22,6 @@ if __name__ == '__main__':
             print(db.create_table(name_table))
             name_table = 'selected'
             print(db.create_table(name_table))
-        bot_logic()
+            
+            bot_logic(table)
     conn.close()
