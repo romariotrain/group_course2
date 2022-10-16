@@ -1,6 +1,0 @@
-vkbot = 'vk1.a.lmZJ4sTwjbf8y5pxNVKN507gwWi7WcO43ju1S-gdsl7UDsEgMi-O8q-lpE0v1eMMJQ4PRaol1u7RDULnUmzWzLFElzJRM07tdU-Xvnzk8PIUm6HaHGp8paqqIYFRp6TSUsrAQ9YAf5uIzDbO1IVTz55-wk1RlCKOk_qvUrBlbMk5nEErI-8ztcQqBvEz1Zi9'
-password_sql = 'sql8114'
-vktoken = 'vk1.a.sab6TGQTJuUcofmnB85t-UpQe40-IAaJrjzYLoKUYwao8mBiVbk_ov-fT-RUt8d_5cBmgn7DIXD1iGM7RDKBgo1vO9t9LLDO7ZmqmpzSXOLXNEESfrXmmR6HQ_ajBFrCeS-AlUGSgdpT7CLxh6-A79KrJbTk-CuxKhObLTmOhRibiWAWeiaGuXxiwD5_ZE5a'
-
-
-
